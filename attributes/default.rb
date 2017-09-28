@@ -1,0 +1,1 @@
+default['icinga2_core']['install_vim_plugin'] = false
