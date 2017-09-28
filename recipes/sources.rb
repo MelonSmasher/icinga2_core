@@ -34,24 +34,28 @@ if %w(debian ubuntu redhat centos fedora amazon windows).include?(node['platform
     when 'redhat', 'centos', 'fedora', 'amazon' # for RHEL based systems
       # don't keep running this
       #unless File.file?("#{icinga2_core_lock_dir}icinga2_yum_repo_added")
-        # What version of RHEL?
-        case node['platform_version'].to_i
-          when 6
-            execute 'add yum repo' do
-              command 'yum install https://packages.icinga.com/epel/icinga-rpm-release-6-latest.noarch.rpm'
-            end
-          when 7
-            execute 'add yum repo' do
-              command 'yum install https://packages.icinga.com/epel/icinga-rpm-release-7-latest.noarch.rpm'
-            end
-        end
-        file "#{icinga2_core_lock_dir}icinga2_yum_repo_added" do
-          content 'true'
-          mode '0755'
-          owner 'root'
-          group 'root'
-        end
-      #end
+      # What version of RHEL?
+      case node['platform_version'].to_i
+        when 6
+          rpm_package 'icinga-rpm-release' do
+            allow_downgrade true
+            source 'https://packages.icinga.com/epel/icinga-rpm-release-6-latest.noarch.rpm'
+            action :install
+          end
+        when 7
+          rpm_package 'icinga-rpm-release' do
+            allow_downgrade true
+            source 'https://packages.icinga.com/epel/icinga-rpm-release-7-latest.noarch.rpm'
+            action :install
+          end
+      end
+      file "#{icinga2_core_lock_dir}icinga2_yum_repo_added" do
+        content 'true'
+        mode '0755'
+        owner 'root'
+        group 'root'
+      end
+    #end
     when 'windows'
       include_recipe 'chocolatey'
   end
