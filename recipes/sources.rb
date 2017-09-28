@@ -36,11 +36,11 @@ if %w(debian ubuntu redhat centos fedora amazon windows).include?(node['platform
       #unless File.file?("#{icinga2_core_lock_dir}icinga2_yum_repo_added")
         # What version of RHEL?
         case node['platform_version']
-          when /6.$/
+          when /6*/
             execute 'add yum repo' do
               command 'yum install https://packages.icinga.com/epel/icinga-rpm-release-6-latest.noarch.rpm'
             end
-          when /7.$/
+          when /7*/
             execute 'add yum repo' do
               command 'yum install https://packages.icinga.com/epel/icinga-rpm-release-7-latest.noarch.rpm'
             end
