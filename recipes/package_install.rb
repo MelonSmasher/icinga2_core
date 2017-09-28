@@ -60,7 +60,7 @@ if %w(debian ubuntu redhat centos fedora amazon windows).include?(node['platform
           package 'nagios-plugins-all' do
             action :upgrade
           end
-          if default['icinga2_core']['install_vim_plugin']
+          if node['icinga2_core']['install_vim_plugin']
             package 'vim-icinga2' do
               action :install
             end
